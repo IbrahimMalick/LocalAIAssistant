@@ -1,0 +1,58 @@
+# -----------------------------------------------------------------------------
+# Secrets & environment
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# -----------------------------------------------------------------------------
+# Generated audio & assistant outputs
+# -----------------------------------------------------------------------------
+outputs/
+*.wav
+*.aiff
+*.mp3
+*.flac
+*.ogg
+# ...but keep tiny docs/readmes if they ever live under an ignored tree
+!**/README.md
+
+# -----------------------------------------------------------------------------
+# Provided voice samples — legally licensed, private, NEVER committed
+# -----------------------------------------------------------------------------
+voice_samples/*
+!voice_samples/README.md
+!voice_samples/.gitkeep
+
+# -----------------------------------------------------------------------------
+# Local model files & TTS voices (large binaries, download locally)
+# -----------------------------------------------------------------------------
+voices/
+models/
+*.onnx
+*.onnx.json
+*.gguf
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# -----------------------------------------------------------------------------
+# Caches
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+.cache/
+.DS_Store
+
+# TTS / HF caches sometimes created in-repo
+tts_home/
+.tts/

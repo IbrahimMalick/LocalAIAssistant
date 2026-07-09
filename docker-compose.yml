@@ -1,0 +1,77 @@
+# -----------------------------------------------------------------------------
+# Local AI Assistant — Docker Compose (Phase 1)
+# -----------------------------------------------------------------------------
+# IMPORTANT — read before running on a Mac Mini Pro (M4):
+#
+#   * Apple Silicon GPU acceleration is NOT available inside Docker Desktop.
+#     Running Ollama or a neural TTS model in a Linux container falls back to
+#     CPU and is much slower. For best performance on macOS we recommend:
+#
+#       - Install Ollama NATIVELY on macOS (it uses the M4 GPU via Metal).
+#       - Optionally run Piper/Coqui natively too (see setup/voice_setup.md).
+#
+#   * This compose file therefore ships TWO profiles:
+#
+#       (default) `assistant` only — a lightweight Python container that talks
+#                 to Ollama running natively on the Mac host via
+#                 host.docker.internal. This is the RECOMMENDED setup.
+#
+#       `full`    also starts Ollama inside Docker (CPU-only). Handy on Linux
+#                 or for a fully self-contained demo, but slower on macOS.
+#
+# Usage:
+#     # Recommended (Ollama native on the Mac, assistant in Docker):
+#     docker compose run --rm assistant
+#
+#     # Fully containerized (Ollama in Docker too, slower on macOS):
+#     docker compose --profile full up
+# -----------------------------------------------------------------------------
+
+services:
+  # ---------------------------------------------------------------------------
+  # The assistant application container. It does NOT run models itself; it
+  # calls out to Ollama (native on the host by default). TTS_BACKEND defaults
+  # to "none" here because neural audio engines run best natively on macOS —
+  # override it if you install Piper inside the image.
+  # ---------------------------------------------------------------------------
+  assistant:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: local-ai-assistant:phase1
+    environment:
+      # Reach Ollama running natively on the Mac host from inside the container.
+      - LLM_ENDPOINT=http://host.docker.internal:11434
+      - LLM_MODEL=${LLM_MODEL:-llama3.1:8b}
+      - ASSISTANT_NAME=${ASSISTANT_NAME:-Aria}
+      # Headless container default: write a text transcript instead of audio.
+      # Do real voice synthesis natively on macOS, or set this to "piper" if you
+      # bake Piper + a voice model into the image.
+      - TTS_BACKEND=${TTS_BACKEND:-none}
+    extra_hosts:
+      # Makes host.docker.internal resolve on Linux too (works out of the box
+      # on Docker Desktop for macOS/Windows).
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./outputs:/app/outputs
+    # Default command runs the demo. Override with any script, e.g.:
+    #   docker compose run --rm assistant python src/scripts/test_llm.py
+    command: ["python", "src/scripts/run_demo.py", "Say hello from inside Docker."]
+
+  # ---------------------------------------------------------------------------
+  # Optional: Ollama inside Docker (CPU-only on macOS). Enable with:
+  #     docker compose --profile full up
+  # On a Mac, prefer the native Ollama app for M4 GPU acceleration instead.
+  # ---------------------------------------------------------------------------
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["full"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    # After it starts, pull a model once:
+    #   docker compose exec ollama ollama pull llama3.1:8b
+
+volumes:
+  ollama_models:

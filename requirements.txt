@@ -1,0 +1,13 @@
+# Phase 1 core has ZERO hard third-party dependencies — the LLM and TTS clients
+# use only the Python standard library plus external binaries (Ollama, Piper,
+# macOS `say`). The packages below are OPTIONAL conveniences / heavier backends.
+#
+# Install what you need:
+#     pip install -r requirements.txt
+
+# Nicer .env loading (optional — a fallback parser is built in).
+python-dotenv>=1.0.0
+
+# Coqui XTTS backend (optional, heavy). Only needed when TTS_BACKEND=coqui.
+# Pulls in torch and downloads a model on first run. Comment out if unused.
+# TTS>=0.22.0
