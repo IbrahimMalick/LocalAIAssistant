@@ -9,6 +9,10 @@ keys — the core loop never leaves the house.
 > witty reply → local spoken audio. Home control, voice input, network
 > isolation, and a refined voice clone are future phases (see below).
 
+> 🚀 **In a hurry?** The complete first-run command sequence for the client is
+> in **[QUICKSTART.md](QUICKSTART.md)** — clone, configure, install Ollama,
+> pull the model, and run three quick tests.
+
 ---
 
 ## Project overview
