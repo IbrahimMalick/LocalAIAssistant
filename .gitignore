@@ -23,6 +23,7 @@ outputs/
 voice_samples/*
 !voice_samples/README.md
 !voice_samples/.gitkeep
+!voice_samples/my_voice_sample.wav
 
 # -----------------------------------------------------------------------------
 # Local model files & TTS voices (large binaries, download locally)
