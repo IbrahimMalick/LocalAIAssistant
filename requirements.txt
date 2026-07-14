@@ -10,4 +10,16 @@ python-dotenv>=1.0.0
 
 # Coqui XTTS backend (optional, heavy). Only needed when TTS_BACKEND=coqui.
 # Pulls in torch and downloads a model on first run. Comment out if unused.
-# TTS>=0.22.0
+#
+# Requires Python <=3.11 (no 3.12+ wheels for this TTS release).
+# Pinned versions below are confirmed working together — newer transformers
+# (5.x) removes an API TTS 0.22.0 depends on, and torch>=2.6 changed
+# torch.load defaults in a way that breaks XTTS checkpoint loading.
+# TTS==0.22.0
+# transformers==4.36.2
+# torch==2.5.1
+# torchaudio==2.5.1
+#
+# XTTS v2 itself is licensed under Coqui's CPML (non-commercial) unless a
+# commercial license is purchased from Coqui — confirm this fits the
+# client's use case before using this backend in production.
