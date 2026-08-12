@@ -72,6 +72,23 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 OUTPUTS_DIR = PROJECT_ROOT / _get("OUTPUTS_DIR", "outputs")
 VOICE_SAMPLES_DIR = PROJECT_ROOT / _get("VOICE_SAMPLES_DIR", "voice_samples")
 
+# Knowledge base (Phase 2 — "Deep Memory") paths.
+KB_DIR = PROJECT_ROOT / _get("KB_DIR", "knowledge_base")
+KB_SOURCES_DIR = KB_DIR / "sources"   # raw source material (git-ignored, client-provided)
+KB_INDEX_DIR = KB_DIR / "index"       # generated vector index (git-ignored)
+KB_EVAL_DIR = KB_DIR / "eval"         # question banks per domain (committed templates)
+
+# The five in-scope knowledge domains for Phase 2. Each maps to a subfolder
+# under KB_SOURCES_DIR and its own evaluation question bank. Editing this list
+# is the single place that defines which specialisations the assistant carries.
+KB_DOMAINS = [
+    "movies_pop_culture",
+    "mythology_religion",
+    "philosophy",
+    "psychology_influence",
+    "law_penal_codes",
+]
+
 
 @dataclass
 class LLMConfig:
@@ -126,17 +143,73 @@ class TTSConfig:
 
 
 @dataclass
+class KnowledgeConfig:
+    """
+    Configuration for the local knowledge base (Phase 2 — "Deep Memory").
+
+    The whole pipeline is local-first: embeddings are produced by a local model
+    (Ollama by default) and vectors are stored on disk. Nothing is sent to a
+    third-party service.
+    """
+
+    # -- Embeddings --------------------------------------------------------
+    # "ollama" -> local embedding model served by Ollama (default, recommended)
+    # "hash"   -> deterministic dependency-free fallback for headless/CI runs
+    #             and pipeline testing when no embedding model is available.
+    embedding_backend: str = field(
+        default_factory=lambda: _get("EMBEDDING_BACKEND", "ollama")
+    )
+    # Local embedding model tag. Pull it once with: `ollama pull nomic-embed-text`.
+    embedding_model: str = field(
+        default_factory=lambda: _get("EMBEDDING_MODEL", "nomic-embed-text")
+    )
+    # Vector dimension used by the "hash" fallback embedder only.
+    hash_embedding_dim: int = field(
+        default_factory=lambda: _get_int("HASH_EMBEDDING_DIM", 512)
+    )
+
+    # -- Chunking ----------------------------------------------------------
+    # Target chunk size and overlap, measured in words (approximate tokens).
+    chunk_size_words: int = field(
+        default_factory=lambda: _get_int("KB_CHUNK_SIZE_WORDS", 220)
+    )
+    chunk_overlap_words: int = field(
+        default_factory=lambda: _get_int("KB_CHUNK_OVERLAP_WORDS", 40)
+    )
+
+    # -- Retrieval ---------------------------------------------------------
+    # How many chunks to retrieve for a query by default.
+    top_k: int = field(default_factory=lambda: _get_int("KB_TOP_K", 5))
+    # Minimum cosine similarity for a chunk to count as a real hit. Below this
+    # the assistant should say "I don't know" rather than answer from noise.
+    min_score: float = field(default_factory=lambda: _get_float("KB_MIN_SCORE", 0.2))
+
+    # -- Paths -------------------------------------------------------------
+    sources_dir: Path = field(default_factory=lambda: KB_SOURCES_DIR)
+    index_dir: Path = field(default_factory=lambda: KB_INDEX_DIR)
+    eval_dir: Path = field(default_factory=lambda: KB_EVAL_DIR)
+    domains: list = field(default_factory=lambda: list(KB_DOMAINS))
+
+    # Seconds before an embedding request is abandoned.
+    request_timeout: int = field(
+        default_factory=lambda: _get_int("EMBEDDING_REQUEST_TIMEOUT", 120)
+    )
+
+
+@dataclass
 class AssistantConfig:
     """Top-level assistant configuration."""
 
     name: str = field(default_factory=lambda: _get("ASSISTANT_NAME", "Aria"))
     llm: LLMConfig = field(default_factory=LLMConfig)
     tts: TTSConfig = field(default_factory=TTSConfig)
+    knowledge: KnowledgeConfig = field(default_factory=KnowledgeConfig)
 
 
 def load_config() -> AssistantConfig:
     """Build and return the assistant configuration from the environment."""
     OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+    KB_INDEX_DIR.mkdir(parents=True, exist_ok=True)
     return AssistantConfig()
 
 

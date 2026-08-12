@@ -23,3 +23,18 @@ python-dotenv>=1.0.0
 # XTTS v2 itself is licensed under Coqui's CPML (non-commercial) unless a
 # commercial license is purchased from Coqui — confirm this fits the
 # client's use case before using this backend in production.
+
+# ---------------------------------------------------------------------------
+# Knowledge base (Phase 2 — "Deep Memory"). All OPTIONAL:
+#   * embeddings use local Ollama over HTTP (stdlib) or the built-in 'hash'
+#     fallback — no package needed;
+#   * the vector store is pure-Python, using numpy only if present.
+# Install only what your source formats / scale require.
+# ---------------------------------------------------------------------------
+# Read PDF source files (TTS_BACKEND-independent):
+# pypdf>=4.0.0
+# Cleaner EPUB extraction (a stdlib fallback works without these):
+# EbookLib>=0.18
+# beautifulsoup4>=4.12.0
+# Faster vector search on larger indexes (optional; pure-Python fallback exists):
+# numpy>=1.24.0

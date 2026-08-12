@@ -1,0 +1,21 @@
+{
+  "domain": "philosophy",
+  "description": "Accuracy question bank for philosophy. Client to expand to ~20-30 'must nail these' questions (see Client Responsibilities).",
+  "questions": [
+    {
+      "question": "What is Kant's categorical imperative?",
+      "expected_keywords": ["categorical imperative", "universal law", "maxim"],
+      "expected_source": "sample_philosophy.md"
+    },
+    {
+      "question": "What does utilitarianism say is the right action?",
+      "expected_keywords": ["utilitarianism", "happiness", "maximizes"],
+      "expected_source": "sample_philosophy.md"
+    },
+    {
+      "question": "What does Stoicism emphasize?",
+      "expected_keywords": ["Stoicism", "virtue", "reason"],
+      "expected_source": "sample_philosophy.md"
+    }
+  ]
+}

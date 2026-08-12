@@ -26,6 +26,19 @@ voice_samples/*
 !voice_samples/my_voice_sample.wav
 
 # -----------------------------------------------------------------------------
+# Knowledge base (Phase 2) — provided/copyrighted source material and the
+# generated index are never committed. READMEs, eval banks, and the small
+# original sample_*.md demo files ARE kept.
+# -----------------------------------------------------------------------------
+knowledge_base/sources/**
+!knowledge_base/sources/**/
+!knowledge_base/sources/**/README.md
+!knowledge_base/sources/**/.gitkeep
+!knowledge_base/sources/**/sample_*.md
+knowledge_base/index/**
+!knowledge_base/index/.gitkeep
+
+# -----------------------------------------------------------------------------
 # Local model files & TTS voices (large binaries, download locally)
 # -----------------------------------------------------------------------------
 voices/

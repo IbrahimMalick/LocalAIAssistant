@@ -1,0 +1,21 @@
+{
+  "domain": "movies_pop_culture",
+  "description": "Accuracy question bank for movies & pop culture. Client to expand to ~20-30 'must nail these' questions (see Client Responsibilities).",
+  "questions": [
+    {
+      "question": "Who wrote and directed Weird Science?",
+      "expected_keywords": ["John Hughes", "Weird Science"],
+      "expected_source": "sample_movies.md"
+    },
+    {
+      "question": "What year was The Breakfast Club released?",
+      "expected_keywords": ["1985", "Breakfast Club"],
+      "expected_source": "sample_movies.md"
+    },
+    {
+      "question": "What is a practical effect in filmmaking?",
+      "expected_keywords": ["practical effect", "physically", "set"],
+      "expected_source": "sample_movies.md"
+    }
+  ]
+}

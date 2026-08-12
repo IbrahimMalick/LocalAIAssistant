@@ -1,0 +1,21 @@
+{
+  "domain": "mythology_religion",
+  "description": "Accuracy question bank for world mythology & religion. Client to expand to ~20-30 'must nail these' questions (see Client Responsibilities).",
+  "questions": [
+    {
+      "question": "Who is the king of the gods in Greek mythology?",
+      "expected_keywords": ["Zeus", "Olympus"],
+      "expected_source": "sample_mythology.md"
+    },
+    {
+      "question": "What is Thor's hammer called in Norse mythology?",
+      "expected_keywords": ["Mjolnir", "Thor"],
+      "expected_source": "sample_mythology.md"
+    },
+    {
+      "question": "What does the word pantheon mean?",
+      "expected_keywords": ["pantheon", "gods"],
+      "expected_source": "sample_mythology.md"
+    }
+  ]
+}

@@ -146,7 +146,8 @@ docker compose run --rm assistant python src/scripts/test_llm.py "Hi"
 ├── setup/
 │   ├── macos_setup.md
 │   ├── model_setup.md
-│   └── voice_setup.md
+│   ├── voice_setup.md
+│   └── knowledge_setup.md   # Phase 2: load sources, build & test the KB
 ├── src/
 │   ├── assistant/
 │   │   ├── __init__.py
@@ -154,17 +155,33 @@ docker compose run --rm assistant python src/scripts/test_llm.py "Hi"
 │   │   ├── config.py        # env-driven configuration
 │   │   ├── prompts.py       # personality (edit me!)
 │   │   ├── llm_client.py    # Ollama client
-│   │   └── tts_client.py    # TTS backends
+│   │   ├── tts_client.py    # TTS backends
+│   │   └── knowledge/       # Phase 2: local knowledge base (RAG)
+│   │       ├── loaders.py       # read txt/md/transcripts/pdf/epub
+│   │       ├── chunking.py      # clean + split into chunks
+│   │       ├── embeddings.py    # local embeddings (Ollama / hash fallback)
+│   │       ├── vector_store.py  # on-disk cosine search
+│   │       ├── ingest.py        # orchestration
+│   │       └── retriever.py     # query → grounded, citable passages
 │   └── scripts/
 │       ├── test_llm.py
 │       ├── test_tts.py
-│       └── run_demo.py
+│       ├── run_demo.py
+│       ├── ingest_knowledge.py  # build the knowledge index
+│       ├── kb_search.py         # test retrieval
+│       └── eval_knowledge.py    # per-domain accuracy metrics
+├── knowledge_base/          # Phase 2: sources (git-ignored), eval banks, index
+│   ├── sources/<domain>/
+│   ├── eval/<domain>.json
+│   └── index/               # generated (git-ignored)
 ├── voice_samples/           # legally provided samples (git-ignored)
 │   └── README.md
 ├── outputs/                 # generated audio (git-ignored)
 └── docs/
     ├── architecture.md
     ├── phase1_scope.md
+    ├── phase2_scope.md      # KB scope, milestones, client responsibilities
+    ├── knowledge_base.md    # KB architecture & evaluation methodology
     └── future_roadmap.md
 ```
 
@@ -180,6 +197,33 @@ docker compose run --rm assistant python src/scripts/test_llm.py "Hi"
 - **Docker on Apple Silicon is CPU-bound** for models — run Ollama and neural
   TTS natively for M4 GPU acceleration.
 - **Local-only core.** By design there is no cloud fallback.
+
+## Phase 2 — Specialized Local Knowledge Base ("Deep Memory") · in progress
+
+Gives the assistant deep, source-grounded recall across five curated domains
+(movies & pop culture, mythology & religion, philosophy, psychology & influence,
+law & penal codes) — all local, all private. It searches a curated library and
+answers from it with citations, and says "I don't know" instead of guessing.
+
+Quick start (dependency-free demo, no model or network needed):
+
+```bash
+EMBEDDING_BACKEND=hash python src/scripts/ingest_knowledge.py   # build index
+EMBEDDING_BACKEND=hash python src/scripts/kb_search.py "What is the categorical imperative?"
+EMBEDDING_BACKEND=hash python src/scripts/eval_knowledge.py     # accuracy metrics
+```
+
+For real semantic search, pull a local embedding model
+(`ollama pull nomic-embed-text`) and drop source files into
+`knowledge_base/sources/<domain>/`. Full guide:
+[setup/knowledge_setup.md](setup/knowledge_setup.md) · architecture:
+[docs/knowledge_base.md](docs/knowledge_base.md) · scope & milestones:
+[docs/phase2_scope.md](docs/phase2_scope.md).
+
+> **Milestone 1 (delivered):** ingestion framework, local embedding + vector-DB
+> configuration, domain layout, and the evaluation methodology. Milestones 2–3
+> scale ingestion over the provided corpus, wire retrieval into the assistant's
+> answers with citations, and run per-domain accuracy testing.
 
 ## Future phases
 

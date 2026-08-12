@@ -15,6 +15,10 @@ outputs/
 *.ogg
 voices/
 models/
+# Knowledge-base source material and generated index are mounted/rebuilt at
+# runtime, not baked into the image, and can be large.
+knowledge_base/sources/
+knowledge_base/index/
 *.onnx
 *.onnx.json
 *.gguf
