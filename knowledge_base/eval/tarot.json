@@ -1,0 +1,31 @@
+{
+  "domain": "tarot",
+  "description": "Accuracy question bank for tarot knowledge.",
+  "questions": [
+    {
+      "question": "What does The Tower card mean?",
+      "expected_keywords": ["Tower", "upheaval", "collapse"],
+      "expected_source": "major_arcana.md"
+    },
+    {
+      "question": "What is the upright meaning of the Three of Cups?",
+      "expected_keywords": ["Three of Cups", "friendship", "celebration"],
+      "expected_source": "minor_arcana.md"
+    },
+    {
+      "question": "What does the Death card usually signify in tarot?",
+      "expected_keywords": ["Death", "endings", "transformation"],
+      "expected_source": "major_arcana.md"
+    },
+    {
+      "question": "What positions are in a Celtic Cross spread?",
+      "expected_keywords": ["Celtic Cross", "challenge", "outcome"],
+      "expected_source": "spreads.md"
+    },
+    {
+      "question": "What do the four tarot suits represent?",
+      "expected_keywords": ["Wands", "Cups", "Swords", "Pentacles"],
+      "expected_source": "minor_arcana.md"
+    }
+  ]
+}

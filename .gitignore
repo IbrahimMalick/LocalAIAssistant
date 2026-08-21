@@ -30,11 +30,14 @@ voice_samples/*
 # generated index are never committed. READMEs, eval banks, and the small
 # original sample_*.md demo files ARE kept.
 # -----------------------------------------------------------------------------
+# Authored reference content (*.md) IS committed — it's Celeste's base
+# knowledge, written in original wording. Provided/bulk source material in other
+# formats (.txt, .pdf, .epub, transcripts) stays ignored so large or
+# copyrighted files are never committed.
 knowledge_base/sources/**
 !knowledge_base/sources/**/
-!knowledge_base/sources/**/README.md
+!knowledge_base/sources/**/*.md
 !knowledge_base/sources/**/.gitkeep
-!knowledge_base/sources/**/sample_*.md
 knowledge_base/index/**
 !knowledge_base/index/.gitkeep
 

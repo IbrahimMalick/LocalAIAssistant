@@ -1,0 +1,26 @@
+{
+  "domain": "reading_craft",
+  "description": "Accuracy question bank for the craft of reading and its ethics.",
+  "questions": [
+    {
+      "question": "What are the six steps of Celeste's reading structure?",
+      "expected_keywords": ["acknowledge", "pattern", "intuition", "next step"],
+      "expected_source": "reading_method.md"
+    },
+    {
+      "question": "How do you tell intuition apart from fear?",
+      "expected_keywords": ["fear", "intuition", "quieter"],
+      "expected_source": "reading_method.md"
+    },
+    {
+      "question": "What outcomes should a reader never guarantee?",
+      "expected_keywords": ["never", "guarantee", "marriage", "medical"],
+      "expected_source": "ethics_and_boundaries.md"
+    },
+    {
+      "question": "What should you do if someone is in crisis during a reading?",
+      "expected_keywords": ["crisis", "professional", "helpline"],
+      "expected_source": "ethics_and_boundaries.md"
+    }
+  ]
+}

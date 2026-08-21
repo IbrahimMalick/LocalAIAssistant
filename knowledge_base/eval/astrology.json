@@ -1,0 +1,31 @@
+{
+  "domain": "astrology",
+  "description": "Accuracy question bank for astrology knowledge.",
+  "questions": [
+    {
+      "question": "What are the traits of Scorpio?",
+      "expected_keywords": ["Scorpio", "intense", "perceptive"],
+      "expected_source": "astrology.md"
+    },
+    {
+      "question": "What does the planet Venus govern?",
+      "expected_keywords": ["Venus", "love", "values"],
+      "expected_source": "astrology.md"
+    },
+    {
+      "question": "What does the seventh house represent?",
+      "expected_keywords": ["7", "partnership", "marriage"],
+      "expected_source": "astrology.md"
+    },
+    {
+      "question": "What is the difference between Sun, Moon and Rising signs?",
+      "expected_keywords": ["Sun", "Moon", "Rising", "Ascendant"],
+      "expected_source": "astrology.md"
+    },
+    {
+      "question": "Which signs are the fire signs?",
+      "expected_keywords": ["Aries", "Leo", "Sagittarius"],
+      "expected_source": "astrology.md"
+    }
+  ]
+}

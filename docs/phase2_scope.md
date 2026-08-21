@@ -1,5 +1,14 @@
 # Phase 2 Scope — Specialized Local Knowledge Base ("Deep Memory")
 
+> **Note on the current build.** The RAG framework below is domain-agnostic. The
+> **working build currently targets the Celeste Noir persona** and her reading
+> crafts (tarot, palmistry, astrology, numerology, reading craft), built
+> proactively from public-domain systems in original wording — see
+> [celeste_persona.md](celeste_persona.md). The originally-scoped domains in this
+> document remain the contractual record and can be populated when the client
+> provides materials; the engineering (ingestion, embeddings, vector store,
+> retrieval, evaluation) is identical either way.
+
 This phase gives the local AI assistant a **private, searchable knowledge base**
 across curated domains. Source material is embedded and searched entirely
 locally; nothing is sent to a third-party service. Answers are grounded in the

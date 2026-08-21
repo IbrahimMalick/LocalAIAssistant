@@ -1,0 +1,26 @@
+{
+  "domain": "palmistry",
+  "description": "Accuracy question bank for palmistry knowledge.",
+  "questions": [
+    {
+      "question": "What does the heart line represent in palmistry?",
+      "expected_keywords": ["heart line", "love", "emotion"],
+      "expected_source": "palmistry.md"
+    },
+    {
+      "question": "Does the life line predict how long someone will live?",
+      "expected_keywords": ["life line", "vitality", "NOT lifespan"],
+      "expected_source": "palmistry.md"
+    },
+    {
+      "question": "What does the Mount of Venus indicate?",
+      "expected_keywords": ["Mount of Venus", "love", "vitality"],
+      "expected_source": "palmistry.md"
+    },
+    {
+      "question": "What are the four palmistry hand shapes?",
+      "expected_keywords": ["earth", "air", "water", "fire"],
+      "expected_source": "palmistry.md"
+    }
+  ]
+}

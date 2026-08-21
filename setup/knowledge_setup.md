@@ -23,15 +23,17 @@ EMBEDDING_MODEL=nomic-embed-text
 
 ## 2. Add source material
 
-Drop files into the matching domain folder under `knowledge_base/sources/`:
+Celeste's base knowledge (tarot, palmistry, astrology, numerology, reading
+craft) ships as original `*.md` files in these folders. To expand a domain, add
+more files to the matching folder under `knowledge_base/sources/`:
 
 ```
 knowledge_base/sources/
-├── movies_pop_culture/
-├── mythology_religion/
-├── philosophy/
-├── psychology_influence/
-└── law_penal_codes/
+├── tarot/
+├── palmistry/
+├── astrology/
+├── numerology/
+└── reading_craft/
 ```
 
 Supported formats:
@@ -61,8 +63,8 @@ Re-run this any time you add or change source files. The index is written to
 ## 4. Test retrieval
 
 ```bash
-python src/scripts/kb_search.py "Who directed Weird Science?"
-python src/scripts/kb_search.py --domain philosophy "What is the categorical imperative?"
+python src/scripts/kb_search.py "What does the Tower card mean?"
+python src/scripts/kb_search.py --domain palmistry "What does the heart line show?"
 ```
 
 Each hit shows a similarity score, domain, and source so you can see exactly
@@ -76,7 +78,7 @@ Question banks live in `knowledge_base/eval/<domain>.json`. Add ~20–30
 
 ```bash
 python src/scripts/eval_knowledge.py
-python src/scripts/eval_knowledge.py --domain law_penal_codes
+python src/scripts/eval_knowledge.py --domain tarot
 ```
 
 This reports **recall@k** and the **confident-answer rate** per domain.
@@ -85,12 +87,12 @@ This reports **recall@k** and the **confident-answer rate** per domain.
 
 ```json
 {
-  "domain": "philosophy",
+  "domain": "tarot",
   "questions": [
     {
-      "question": "What is Kant's categorical imperative?",
-      "expected_keywords": ["categorical imperative", "universal law"],
-      "expected_source": "kant_groundwork.txt"
+      "question": "What does The Tower card mean?",
+      "expected_keywords": ["Tower", "upheaval", "collapse"],
+      "expected_source": "major_arcana.md"
     }
   ]
 }

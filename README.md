@@ -83,7 +83,7 @@ Copy the example and adjust. Key settings:
 
 | Variable        | Purpose                          | Default                  |
 |-----------------|----------------------------------|--------------------------|
-| `ASSISTANT_NAME`| Name the assistant answers to    | `Aria`                   |
+| `ASSISTANT_NAME`| Name the assistant answers to    | `Celeste Noir`           |
 | `LLM_MODEL`     | Ollama model tag                 | `llama3.1:8b`            |
 | `LLM_ENDPOINT`  | Ollama URL                       | `http://localhost:11434` |
 | `LLM_TEMPERATURE`| Sampling temperature            | `0.7`                    |
@@ -167,11 +167,12 @@ docker compose run --rm assistant python src/scripts/test_llm.py "Hi"
 │       ├── test_llm.py
 │       ├── test_tts.py
 │       ├── run_demo.py
+│       ├── run_reading.py       # Celeste gives a reading (retrieval→LLM→voice)
 │       ├── ingest_knowledge.py  # build the knowledge index
 │       ├── kb_search.py         # test retrieval
 │       └── eval_knowledge.py    # per-domain accuracy metrics
-├── knowledge_base/          # Phase 2: sources (git-ignored), eval banks, index
-│   ├── sources/<domain>/
+├── knowledge_base/          # Phase 2: Celeste's reading-craft knowledge
+│   ├── sources/{tarot,palmistry,astrology,numerology,reading_craft}/
 │   ├── eval/<domain>.json
 │   └── index/               # generated (git-ignored)
 ├── voice_samples/           # legally provided samples (git-ignored)
@@ -182,6 +183,7 @@ docker compose run --rm assistant python src/scripts/test_llm.py "Hi"
     ├── phase1_scope.md
     ├── phase2_scope.md      # KB scope, milestones, client responsibilities
     ├── knowledge_base.md    # KB architecture & evaluation methodology
+    ├── celeste_persona.md   # the Celeste Noir persona
     └── future_roadmap.md
 ```
 
@@ -198,24 +200,39 @@ docker compose run --rm assistant python src/scripts/test_llm.py "Hi"
   TTS natively for M4 GPU acceleration.
 - **Local-only core.** By design there is no cloud fallback.
 
-## Phase 2 — Specialized Local Knowledge Base ("Deep Memory") · in progress
+## Meet Celeste Noir — the Manhattan Psychic
 
-Gives the assistant deep, source-grounded recall across five curated domains
-(movies & pop culture, mythology & religion, philosophy, psychology & influence,
-law & penal codes) — all local, all private. It searches a curated library and
-answers from it with citations, and says "I don't know" instead of guessing.
+The active persona is **Celeste Noir**, a sharp, intuitive reader with New York
+directness. She reads emotional patterns and subtext — grounded in a local
+knowledge base of the reading crafts — and treats readings as intuitive guidance
+and entertainment, never a substitute for professional advice. Persona details:
+[docs/celeste_persona.md](docs/celeste_persona.md).
+
+Give her a reading (end to end — retrieval → LLM in her voice → optional voice):
+
+```bash
+python src/scripts/run_reading.py "Should I take the new job in Chicago?"
+python src/scripts/run_reading.py --no-voice "What does the Tower card mean?"
+```
+
+## Phase 2 — Specialized Local Knowledge Base ("Deep Memory")
+
+Gives Celeste deep, source-grounded recall across five reading crafts — **tarot,
+palmistry, astrology, numerology, and the craft of reading** — all local, all
+private. Content is written in original wording from traditional, public-domain
+systems. She searches her library, grounds answers in it, and reads on intuition
+(saying so) when there's no confident match.
 
 Quick start (dependency-free demo, no model or network needed):
 
 ```bash
 EMBEDDING_BACKEND=hash python src/scripts/ingest_knowledge.py   # build index
-EMBEDDING_BACKEND=hash python src/scripts/kb_search.py "What is the categorical imperative?"
+EMBEDDING_BACKEND=hash python src/scripts/kb_search.py "What does the Tower card mean?"
 EMBEDDING_BACKEND=hash python src/scripts/eval_knowledge.py     # accuracy metrics
 ```
 
 For real semantic search, pull a local embedding model
-(`ollama pull nomic-embed-text`) and drop source files into
-`knowledge_base/sources/<domain>/`. Full guide:
+(`ollama pull nomic-embed-text`) and rebuild the index. Full guide:
 [setup/knowledge_setup.md](setup/knowledge_setup.md) · architecture:
 [docs/knowledge_base.md](docs/knowledge_base.md) · scope & milestones:
 [docs/phase2_scope.md](docs/phase2_scope.md).

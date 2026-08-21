@@ -78,15 +78,18 @@ KB_SOURCES_DIR = KB_DIR / "sources"   # raw source material (git-ignored, client
 KB_INDEX_DIR = KB_DIR / "index"       # generated vector index (git-ignored)
 KB_EVAL_DIR = KB_DIR / "eval"         # question banks per domain (committed templates)
 
-# The five in-scope knowledge domains for Phase 2. Each maps to a subfolder
-# under KB_SOURCES_DIR and its own evaluation question bank. Editing this list
-# is the single place that defines which specialisations the assistant carries.
+# The knowledge domains that make up Celeste Noir's "Deep Memory". Each maps to
+# a subfolder under KB_SOURCES_DIR and its own evaluation question bank. Editing
+# this list is the single place that defines which crafts she can draw on.
+#
+# Content is built from traditional, public-domain reading systems, written in
+# original wording (see docs/celeste_persona.md and docs/knowledge_base.md).
 KB_DOMAINS = [
-    "movies_pop_culture",
-    "mythology_religion",
-    "philosophy",
-    "psychology_influence",
-    "law_penal_codes",
+    "tarot",
+    "palmistry",
+    "astrology",
+    "numerology",
+    "reading_craft",
 ]
 
 
@@ -200,7 +203,7 @@ class KnowledgeConfig:
 class AssistantConfig:
     """Top-level assistant configuration."""
 
-    name: str = field(default_factory=lambda: _get("ASSISTANT_NAME", "Aria"))
+    name: str = field(default_factory=lambda: _get("ASSISTANT_NAME", "Celeste Noir"))
     llm: LLMConfig = field(default_factory=LLMConfig)
     tts: TTSConfig = field(default_factory=TTSConfig)
     knowledge: KnowledgeConfig = field(default_factory=KnowledgeConfig)

@@ -1,0 +1,26 @@
+{
+  "domain": "numerology",
+  "description": "Accuracy question bank for numerology knowledge.",
+  "questions": [
+    {
+      "question": "What does the number 7 mean in numerology?",
+      "expected_keywords": ["7", "introspection", "spirituality"],
+      "expected_source": "numerology.md"
+    },
+    {
+      "question": "How do you calculate a Life Path number?",
+      "expected_keywords": ["Life Path", "birth date", "reduce"],
+      "expected_source": "numerology.md"
+    },
+    {
+      "question": "What are the master numbers in numerology?",
+      "expected_keywords": ["11", "22", "33"],
+      "expected_source": "numerology.md"
+    },
+    {
+      "question": "What does the number 1 represent?",
+      "expected_keywords": ["1", "leadership", "independence"],
+      "expected_source": "numerology.md"
+    }
+  ]
+}
