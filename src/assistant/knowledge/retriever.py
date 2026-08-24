@@ -28,13 +28,35 @@ class RetrievalResult:
     hits: List[SearchHit]
     confident: bool  # True if the top hit clears config.min_score
 
+    def _citation(self, hit) -> str:
+        src = hit.metadata.get("source", "?")
+        section = hit.metadata.get("section", "")
+        return f"{src} › {section}" if section else src
+
     def context_block(self) -> str:
         """Format hits as a numbered, citable context block for an LLM prompt."""
         lines = []
         for i, hit in enumerate(self.hits, start=1):
-            src = hit.metadata.get("source", "?")
-            lines.append(f"[{i}] (source: {src})\n{hit.text}")
+            lines.append(f"[{i}] (source: {self._citation(hit)})\n{hit.text}")
         return "\n\n".join(lines)
+
+    def sources(self) -> List[dict]:
+        """Unique, ranked source citations used for this result."""
+        seen = set()
+        out = []
+        for hit in self.hits:
+            cite = self._citation(hit)
+            if cite in seen:
+                continue
+            seen.add(cite)
+            out.append({
+                "source": hit.metadata.get("source", "?"),
+                "section": hit.metadata.get("section", ""),
+                "domain": hit.metadata.get("domain", ""),
+                "citation": cite,
+                "score": round(float(hit.score), 3),
+            })
+        return out
 
 
 class Retriever:

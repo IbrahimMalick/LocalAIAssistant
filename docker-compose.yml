@@ -43,20 +43,32 @@ services:
       # Reach Ollama running natively on the Mac host from inside the container.
       - LLM_ENDPOINT=http://host.docker.internal:11434
       - LLM_MODEL=${LLM_MODEL:-llama3.1:8b}
-      - ASSISTANT_NAME=${ASSISTANT_NAME:-Aria}
+      - ASSISTANT_NAME=${ASSISTANT_NAME:-Celeste Noir}
       # Headless container default: write a text transcript instead of audio.
       # Do real voice synthesis natively on macOS, or set this to "piper" if you
       # bake Piper + a voice model into the image.
       - TTS_BACKEND=${TTS_BACKEND:-none}
+      # Knowledge base ("Deep Memory"). Embeddings come from the host Ollama by
+      # default; set EMBEDDING_BACKEND=hash for a dependency-free run with no
+      # embedding model. Pull the model on the host once: ollama pull nomic-embed-text
+      - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-ollama}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-nomic-embed-text}
     extra_hosts:
       # Makes host.docker.internal resolve on Linux too (works out of the box
       # on Docker Desktop for macOS/Windows).
       - "host.docker.internal:host-gateway"
     volumes:
       - ./outputs:/app/outputs
-    # Default command runs the demo. Override with any script, e.g.:
-    #   docker compose run --rm assistant python src/scripts/test_llm.py
-    command: ["python", "src/scripts/run_demo.py", "Say hello from inside Docker."]
+      # Mount the knowledge base so her library + generated index live on the
+      # host (the index persists between runs and is rebuildable).
+      - ./knowledge_base:/app/knowledge_base
+    # Default command gives a reading. First build her index once, then read:
+    #   docker compose run --rm assistant python src/scripts/ingest_knowledge.py
+    #   docker compose run --rm assistant python src/scripts/run_reading.py --no-voice "Should I take the job?"
+    # Other entry points:
+    #   docker compose run --rm assistant python src/scripts/kb_search.py "the Tower card"
+    #   docker compose run --rm assistant python src/scripts/eval_knowledge.py
+    command: ["python", "src/scripts/run_reading.py", "--no-voice", "Should I take the new job in Chicago?"]
 
   # ---------------------------------------------------------------------------
   # Optional: Ollama inside Docker (CPU-only on macOS). Enable with:

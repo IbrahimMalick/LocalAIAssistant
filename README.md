@@ -181,8 +181,9 @@ docker compose run --rm assistant python src/scripts/test_llm.py "Hi"
 └── docs/
     ├── architecture.md
     ├── phase1_scope.md
-    ├── phase2_scope.md      # KB scope, milestones, client responsibilities
+    ├── phase2_scope.md      # KB scope, milestones (all delivered), responsibilities
     ├── knowledge_base.md    # KB architecture & evaluation methodology
+    ├── accuracy_report.md   # per-domain retrieval accuracy results
     ├── celeste_persona.md   # the Celeste Noir persona
     └── future_roadmap.md
 ```
@@ -236,6 +237,13 @@ For real semantic search, pull a local embedding model
 [setup/knowledge_setup.md](setup/knowledge_setup.md) · architecture:
 [docs/knowledge_base.md](docs/knowledge_base.md) · scope & milestones:
 [docs/phase2_scope.md](docs/phase2_scope.md).
+
+**Status: all three milestones delivered.** The ingestion framework (M1), the
+searchable KB wired into her readings (M2), and source-grounded citations,
+per-domain accuracy testing, retrieval refinements, and Docker/config (M3) are
+complete — **95% recall@5, 100% confident** on the test set (see
+[docs/accuracy_report.md](docs/accuracy_report.md)). Her readings cite what they
+draw on, e.g. `major_arcana.md › XVI — The Tower`.
 
 > **Milestone 1 (delivered):** ingestion framework, local embedding + vector-DB
 > configuration, domain layout, and the evaluation methodology. Milestones 2–3

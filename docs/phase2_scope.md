@@ -22,30 +22,30 @@ retrieved passages and cite their sources.
 4. Psychology & influence
 5. Law / penal codes — **jurisdiction to be confirmed by the client**
 
-## Milestones
+## Milestones — all delivered ✅
 
-### Milestone 1 — Week 1 — $300
-- Review and organize provided PDFs, EPUBs, text and transcripts
-- Define ingestion and cleaning architecture
-- Configure local embedding model and vector database
-- Build initial ingestion framework
-- Define per-domain evaluation methodology
+### Milestone 1 — Week 1 — $300 — ✅ Delivered
+- [x] Review and organize provided PDFs, EPUBs, text and transcripts — loaders + domain layout
+- [x] Define ingestion and cleaning architecture — `knowledge/` package, documented in `knowledge_base.md`
+- [x] Configure local embedding model and vector database — Ollama embedder + on-disk cosine store
+- [x] Build initial ingestion framework — `ingest.py` + `ingest_knowledge.py`
+- [x] Define per-domain evaluation methodology — `eval_knowledge.py` + question banks
 
-### Milestone 2 — Week 2 — $300
-- Complete local ingestion pipeline
-- Process supported source material
-- Build searchable local vector knowledge base
-- Connect retrieval to the existing assistant
-- Configure domain-specific retrieval
+### Milestone 2 — Week 2 — $300 — ✅ Delivered
+- [x] Complete local ingestion pipeline — end-to-end load → clean → chunk → embed → store
+- [x] Process supported source material — 71 chunks across 5 domains
+- [x] Build searchable local vector knowledge base — `vector_store.py` + `kb_search.py`
+- [x] Connect retrieval to the existing assistant — `Assistant.read()` / `give_reading()`
+- [x] Configure domain-specific retrieval — domain-filtered search (`--domain`)
 
-### Milestone 3 — Week 3 — $350
-- Add source-grounded responses and citations
-- Run per-domain accuracy testing
-- Refine retrieval quality
-- Update Docker/configuration files
-- Provide documentation and library expansion guide
+### Milestone 3 — Week 3 — $350 — ✅ Delivered
+- [x] Add source-grounded responses and citations — `RetrievalResult.sources()`, section-level citations shown by `run_reading.py`
+- [x] Run per-domain accuracy testing — see [accuracy_report.md](accuracy_report.md) (95% recall@5, 100% confident)
+- [x] Refine retrieval quality — heading-aware chunking + title boosting + confidence gate
+- [x] Update Docker/configuration files — `docker-compose.yml` KB service/mount, `.env` knobs
+- [x] Provide documentation and library expansion guide — `knowledge_base.md`, `accuracy_report.md`, expansion guide in `knowledge_setup.md`
 
-**Total: $950** — Week 1: $300 · Week 2: $300 · Week 3: $350
+**Total: $950** — Week 1: $300 · Week 2: $300 · Week 3: $350 — **all milestones delivered.**
 
 ## Client Responsibilities
 

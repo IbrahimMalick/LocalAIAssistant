@@ -3,6 +3,22 @@
 How to load source material into the assistant's local knowledge base, build the
 index, and test it. Everything runs locally.
 
+## Library expansion guide (quick reference)
+
+To grow or deepen what Celeste knows — in five steps, no code changes:
+
+1. **Add sources.** Drop files into `knowledge_base/sources/<domain>/`
+   (`.txt`, `.md`, `.vtt`/`.srt`, `.pdf`, `.epub` — legally usable content only).
+   To add a whole new subject, make a new folder and add it to `KB_DOMAINS` in
+   `src/assistant/config.py`.
+2. **Rebuild the index:** `python src/scripts/ingest_knowledge.py`.
+3. **Spot-check retrieval:** `python src/scripts/kb_search.py "a question"`.
+4. **Grow the question bank** for that domain in
+   `knowledge_base/eval/<domain>.json` (aim for ~20–30 questions).
+5. **Measure:** `python src/scripts/eval_knowledge.py --domain <domain>`.
+
+Full detail on each step below.
+
 ## 1. (Recommended) Pull the local embedding model
 
 Real semantic search uses a local embedding model served by Ollama:

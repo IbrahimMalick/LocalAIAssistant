@@ -50,16 +50,20 @@ class Assistant:
             self._retriever = None
         return self._retriever
 
-    def retrieve_context(self, query: str) -> str:
-        """Return a citable context block of relevant knowledge, or ''."""
+    def retrieve(self, query: str):
+        """Return the RetrievalResult for a query, or None if unavailable."""
         retriever = self._get_retriever()
         if retriever is None:
-            return ""
+            return None
         try:
-            result = retriever.retrieve(query)
+            return retriever.retrieve(query)
         except Exception:
-            return ""
-        if not result.hits or not result.confident:
+            return None
+
+    def retrieve_context(self, query: str) -> str:
+        """Return a citable context block of relevant knowledge, or ''."""
+        result = self.retrieve(query)
+        if result is None or not result.hits or not result.confident:
             return ""
         return result.context_block()
 
@@ -77,9 +81,27 @@ class Assistant:
         read in Celeste's voice. Falls back to intuition-only if no confident
         knowledge is found or the KB isn't built.
         """
-        context = self.retrieve_context(situation) if use_knowledge else ""
+        return self.read(situation, use_knowledge=use_knowledge)["text"]
+
+    def read(self, situation: str, use_knowledge: bool = True) -> dict:
+        """
+        Give a reading and report what it was grounded in.
+
+        Returns ``{"text", "sources", "grounded"}`` where ``sources`` is the
+        list of source citations the reading drew on (empty when she read on
+        intuition alone). This is how source-grounded citations surface without
+        breaking Celeste's in-character voice.
+        """
+        result = self.retrieve(situation) if use_knowledge else None
+        grounded = bool(result and result.hits and result.confident)
+        context = result.context_block() if grounded else ""
         prompt = build_reading_prompt(situation, context)
-        return self.llm.chat(prompt, system_prompt=self.system_prompt)
+        text = self.llm.chat(prompt, system_prompt=self.system_prompt)
+        return {
+            "text": text,
+            "sources": result.sources() if grounded else [],
+            "grounded": grounded,
+        }
 
     def speak(self, text: str, out_path: Optional[Path] = None) -> Path:
         """Synthesize ``text`` to a local audio file and return its path."""

@@ -98,7 +98,7 @@ def build_index(
         return store, report
 
     log(f"Embedding {len(chunks)} chunk(s) with {embedder.name}...")
-    vectors = embedder.embed([c.text for c in chunks])
+    vectors = embedder.embed([c.embedding_text() for c in chunks])
 
     store = LocalVectorStore(embedder_name=embedder.name, dim=embedder.dim or len(vectors[0]))
     for chunk, vector in zip(chunks, vectors):
@@ -110,6 +110,7 @@ def build_index(
                 "domain": chunk.domain,
                 "source": chunk.source,
                 "ordinal": chunk.ordinal,
+                "section": chunk.section,
             },
         )
 

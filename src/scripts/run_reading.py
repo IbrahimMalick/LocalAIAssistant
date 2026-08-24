@@ -59,22 +59,24 @@ def main() -> int:
     print(OPENING_INTRODUCTION)
     print()
 
-    # Show whether knowledge was pulled, for transparency.
-    if not no_knowledge:
-        ctx = assistant.retrieve_context(situation)
-        if ctx:
-            first = ctx.splitlines()[1] if len(ctx.splitlines()) > 1 else ""
-            print(f"[drawing on the library... {first[:70]}]\n")
-        else:
-            print("[reading on intuition — no confident match in the library]\n")
-
     try:
-        reading = assistant.give_reading(situation, use_knowledge=not no_knowledge)
+        result = assistant.read(situation, use_knowledge=not no_knowledge)
     except LLMError as exc:
         print(f"LLM error: {exc}", file=sys.stderr)
         return 1
 
+    reading = result["text"]
     print(f"{config.name}: {reading}\n")
+
+    # Source-grounded citations — shown separately so they never intrude on her
+    # in-character voice.
+    if result["grounded"] and result["sources"]:
+        print("— Drawn from her library —")
+        for s in result["sources"]:
+            print(f"  • {s['citation']}  (match {s['score']})")
+        print()
+    elif not no_knowledge:
+        print("— Read on intuition (no confident match in the library) —\n")
 
     if no_voice:
         return 0
