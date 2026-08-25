@@ -91,6 +91,14 @@ class OllamaClient:
                 f"then pull the model with `ollama pull {self.config.model}`.\n"
                 f"Underlying error: {exc.reason}"
             ) from exc
+        except TimeoutError as exc:  # pragma: no cover - network path
+            # A read (not connect) timeout raises a bare TimeoutError from the
+            # socket layer, which urllib does not wrap in URLError.
+            raise LLMError(
+                f"Ollama at {self.config.endpoint} did not respond within "
+                f"{self.config.request_timeout}s. The model may be slow on this "
+                "machine — try a smaller model or raise LLM_REQUEST_TIMEOUT in .env."
+            ) from exc
 
         message = body.get("message", {})
         content = message.get("content", "").strip()
